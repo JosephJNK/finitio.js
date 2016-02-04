@@ -28,3 +28,9 @@ describe "Constraint#toString", ->
     it 'works with an infinite range', ->
       constraint = new Constraint.Range 'open', { min: 1, min_inclusive: true }
       should(constraint.toString()).equal('open: 1..')
+
+  describe 'with a custom function', ->
+    constraint = new Constraint.Function 'finite', '_.isFinite'
+
+    it 'works', ->
+      should(constraint.toString()).equal('finite: &_.isFinite')

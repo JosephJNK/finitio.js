@@ -61,3 +61,29 @@ describe "Constraint#accept", ->
       should(constraint.accept(-10)).equal(false)
       should(constraint.accept(0)).equal(false)
 
+  describe 'with a function', ->
+    constraint = new Constraint.Function 'isEven', "isEven"
+    world = { isEven: (s) -> s % 2 == 0 }
+
+    it 'accepts even numbers', ->
+      should(constraint.accept(2, world)).equal(true)
+      should(constraint.accept(4, world)).equal(true)
+      should(constraint.accept(10, world)).equal(true)
+
+    it 'rejects odd numbers', ->
+      should(constraint.accept(9, world)).equal(false)
+      should(constraint.accept(1, world)).equal(false)
+
+  describe 'with a qualified function name', ->
+    constraint = new Constraint.Function 'isEven', "_.isEven"
+    world = { _: { isEven: (s) -> s % 2 == 0 } }
+
+    it 'accepts even numbers', ->
+      should(constraint.accept(2, world)).equal(true)
+      should(constraint.accept(4, world)).equal(true)
+      should(constraint.accept(10, world)).equal(true)
+
+    it 'rejects odd numbers', ->
+      should(constraint.accept(9, world)).equal(false)
+      should(constraint.accept(1, world)).equal(false)
+
