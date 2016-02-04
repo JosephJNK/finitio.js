@@ -83,8 +83,23 @@ class Constraint.Range extends Constraint
     return "#{@native.min}...#{@native.max}" unless @native.max_inclusive
     return "#{@native.min}..#{@native.max}"
 
+class Constraint.Set extends Constraint
+  kind: 'set'
+
+  accept: (arg, world)->
+    $u.contains(@native, arg)
+
+  equals: (other)->
+    return true if (this is other)
+    return false unless (other instanceof Constraint.Set)
+    return false unless (@native.length == other.native.length)
+    $u.difference(@native, other.native).length == 0
+
+  nativeToString: ()->
+    '{ ' + @native.join(' ') + ' }'
+
 AbstractType Constraint,
-  [ Constraint.Native, Constraint.Regexp, Constraint.Range ],
+  [ Constraint.Native, Constraint.Regexp, Constraint.Range, Constraint.Set, Constraint.Function ],
   [ 'name', 'native', 'metadata' ], 1
 
 #

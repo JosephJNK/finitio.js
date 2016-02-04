@@ -95,6 +95,9 @@ constraint =
 / spacing '::' spacing fn:function_literal {
     return [{ function: fn }];
   }
+/ spacing '::' spacing set:set_literal {
+    return [{ set: set }];
+  }
 
 constraints =
   head:named_constraint tail:(opt_comma named_constraint)* opt_comma {
@@ -291,6 +294,7 @@ literal =
 / integer_literal
 / boolean_literal
 / array_literal
+/ set_literal
 / regexp_literal
 / function_literal
 
@@ -339,6 +343,14 @@ array_literal =
     return headTailToArray(head, tail);
   }
 / '[' spacing ']' {
+    return [];
+  }
+
+set_literal =
+  '{' spacing head:literal tail:(opt_comma literal)* spacing '}' {
+    return headTailToArray(head, tail);
+  }
+/ '{' spacing '}' {
     return [];
   }
 

@@ -34,3 +34,9 @@ describe "Constraint#toString", ->
 
     it 'works', ->
       should(constraint.toString()).equal('finite: &_.isFinite')
+
+  describe 'with a set function', ->
+    constraint = new Constraint.Set 'among', [1, 2, 3]
+
+    it 'works', ->
+      should(constraint.toString()).equal('among: { 1 2 3 }')
